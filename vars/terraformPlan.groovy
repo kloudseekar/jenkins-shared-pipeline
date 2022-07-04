@@ -8,7 +8,7 @@ def call(String action){
                         env.DESTROY = ""
                     }
                         sh "terraform plan -out terraform.tfplan -lock=false;echo \$? > status"
-                        echo ${action}
+                        sh "echo ${action}"
                         stash name: "terraform-plan", includes: "terraform.tfplan"
                     }
                 }
