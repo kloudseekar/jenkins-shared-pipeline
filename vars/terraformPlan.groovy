@@ -1,5 +1,5 @@
 
-def call(action,workingDirectory){
+def call(region,action,workingDirectory){
                 dir("${env.WORKSPACE}/${workingDirectory}"){
 
                     if(action == 'destroy') {
@@ -7,7 +7,7 @@ def call(action,workingDirectory){
                     } else {
                         env.DESTROY = ""
                     }
-                        sh "terraform plan ${env.DESTROY} -out terraform.tfplan -lock=false"
+                        sh "terraform plan ${env.DESTROY} -out terraform.tfplan -lock=false -var region_id=${region}"
                         stash name: "terraform-plan", includes: "terraform.tfplan"
                     }
                 }
