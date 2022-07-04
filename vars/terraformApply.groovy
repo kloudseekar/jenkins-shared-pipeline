@@ -9,7 +9,7 @@ def call(String action){
                     }
 
                         unstash "terraform-plan"
-                        sh "terraform apply ${env.DESTROY} terraform.tfplan -lock=false;echo \$? > status"
+                        sh "terraform apply ${env.DESTROY} terraform.tfplan -lock=false -auto-approve ;echo \$? > status"
 
                     }
                 }
