@@ -1,3 +1,5 @@
+#!/usr/bin/env groovy
+
 def terraformInit() {
     dir("${env.WORKSPACE}/codebase/us-east-1-eks"){
             sh("""
