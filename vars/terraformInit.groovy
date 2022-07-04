@@ -1,6 +1,6 @@
-#!/usr/bin/env groovy
 
-def terraformInit() {
+
+def call() {
     dir("${env.WORKSPACE}/codebase/us-east-1-eks"){
             sh("""
           echo ""
@@ -20,3 +20,4 @@ def terraformInit() {
         }
 
 }
+
