@@ -1,6 +1,6 @@
 
-def call(String action){
-                dir("${env.WORKSPACE}/codebase/us-east-1-eks"){
+def call(action,workingDirectory){
+                dir("${env.WORKSPACE}/${workingDirectory}"){
 
                     if(action == 'destroy') {
                         env.DESTROY = '-destroy'

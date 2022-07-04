@@ -5,7 +5,7 @@ def call( region ,workingDirectory) {
           echo "*************** TERRAFOM INIT ******************"
           echo "******* At environment: ${params.terraform_workspace} ********"
           echo "*************************************************"
-            terraform init -backend-config=${region}.config.s3.tfbackend
+            terraform init -backend-config=${region}-config.s3.tfbackend
             """)
                     script {
                         try {
