@@ -1,12 +1,11 @@
-def call() {
-    dir("${env.WORKSPACE}/codebase/us-east-1-eks"){
+def call(string region , string workingDirectory) {
+    dir("${env.WORKSPACE}/${workingDirectory}"){
             sh("""
           echo ""
           echo "*************** TERRAFOM INIT ******************"
           echo "******* At environment: ${params.terraform_workspace} ********"
           echo "*************************************************"
-            terraform init -backend-config=config.s3.tfbackend
-            echo '\033[Hello colorful world!\033'
+            terraform init -backend-config=${region}.config.s3.tfbackend
             """)
                     script {
                         try {
