@@ -2,7 +2,7 @@
 def call(String action){
                 dir("${env.WORKSPACE}/codebase/us-east-1-eks"){
 
-                    if(params.Action == 'destroy') {
+                    if(action == 'destroy') {
                         env.DESTROY = '-destroy'
                     } else {
                         env.DESTROY = ""
