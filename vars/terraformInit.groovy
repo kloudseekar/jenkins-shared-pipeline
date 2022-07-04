@@ -1,4 +1,4 @@
-def call(string region , string workingDirectory) {
+def call( region ,workingDirectory) {
     dir("${env.WORKSPACE}/${workingDirectory}"){
             sh("""
           echo ""
