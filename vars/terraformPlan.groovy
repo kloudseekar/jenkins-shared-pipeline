@@ -1,6 +1,12 @@
 
 def call(String action){
                 dir("${env.WORKSPACE}/codebase/us-east-1-eks"){
+
+                    if(params.Action == 'Destroy') {
+                        env.DESTROY = '-destroy'
+                    } else {
+                        env.DESTROY = ""
+                    }
                         sh "terraform plan -out terraform.tfplan -lock=false;echo \$? > status"
                         echo ${action}
                         stash name: "terraform-plan", includes: "terraform.tfplan"
