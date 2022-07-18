@@ -2,7 +2,7 @@
 
 //def conf = [path: "codebase/us-east-1-eks",aws_region: params.AWS_REGION, action: params.action, instance_type: params.instance_type , desired_number:params.desired_number]
 
-def call(Map conf = [:]) {
+def call(Map conf) {
 
 properties([
     parameters([
@@ -48,7 +48,6 @@ properties([
         
 ])
 
-conf.
 
 pipeline {
     agent {
