@@ -69,10 +69,10 @@ pipeline {
                 checkout changelog: false, poll: false, scm: [$class: 'GitSCM', branches: [[name: '*/jenkins-parameterized']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/kloudseekar/infra-as-code.git']]]
                 script  {
                     conf.aws_region=params.AWS_REGION
-                    conf.action=params.action
+                    conf.action=params.operation
                     conf.instance_type=params.instance_type
                     conf.desired_number=params.desired_number
-                    println conf
+                    //println conf
 
                 }
 
