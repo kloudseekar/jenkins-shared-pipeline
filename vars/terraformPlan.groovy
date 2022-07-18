@@ -1,5 +1,5 @@
 
-def call(String action){
+def call(String action , String instance_type , String asg_desired_capacity){
                 dir("${env.WORKSPACE}/codebase/us-east-1-eks"){
 
                     if(action == 'destroy') {
@@ -7,7 +7,7 @@ def call(String action){
                     } else {
                         env.DESTROY = ""
                     }
-                        sh "terraform plan ${env.DESTROY} -out terraform.tfplan -lock=false"
+                        sh "terraform plan ${env.DESTROY} -out terraform.tfplan -lock=false -var instance_type=${instance_type}  -var asg_desired_capacity=${asg_desired_capacity}"
                         stash name: "terraform-plan", includes: "terraform.tfplan"
                     }
                 }
