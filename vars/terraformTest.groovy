@@ -1,6 +1,6 @@
 
-def call(map[]){
-    map.each{entry -> println "$entry.key: $entry.value"}
+def call(Map conf){
+    conf.each{entry -> println "$entry.key: $entry.value"}
 
                 }
 
