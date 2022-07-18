@@ -16,7 +16,7 @@
 def call(Map conf){
                 dir("${env.WORKSPACE}/${conf.path}"){
 
-                    if(${conf.action} == 'destroy') {
+                    if("${conf.action}" == 'destroy') {
                         env.DESTROY = '-destroy'
                     } else {
                         env.DESTROY = ""
