@@ -64,14 +64,18 @@ pipeline {
     }
     
     stages{
-        stage('Git Checkout') {
+        stage('Git Checkout & Setup') {
             steps{
                 checkout changelog: false, poll: false, scm: [$class: 'GitSCM', branches: [[name: '*/jenkins-parameterized']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/kloudseekar/infra-as-code.git']]]
-                conf.aws_region=params.AWS_REGION
-                conf.action=params.action
-                conf.instance_type=params.instance_type
-                conf.desired_number=params.desired_number
-                println conf
+                script  {
+                    conf.aws_region=params.AWS_REGION
+                    conf.action=params.action
+                    conf.instance_type=params.instance_type
+                    conf.desired_number=params.desired_number
+                    println conf
+
+                }
+
             }
         }
         stage('Terraform Init') {
