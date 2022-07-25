@@ -80,7 +80,7 @@ pipeline {
         }
     stage('SonarCloud') {
     environment {
-        SCANNER_HOME = tool 'SonarQubeScanner'
+        // SCANNER_HOME = tool 'SonarQubeScanner'
         ORGANIZATION = "ac-maninder"
         PROJECT_NAME = "petclinic"
     }
