@@ -78,7 +78,10 @@ pipeline {
 
         stage('Dummy Step')
         {
-            sh 'ls -ltr'
+            steps{
+                sh 'ls -ltr'
+            }
+            
         }
 
 
