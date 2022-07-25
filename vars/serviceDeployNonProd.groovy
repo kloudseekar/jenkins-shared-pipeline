@@ -123,21 +123,21 @@ def call(Map conf) {
                 }
             }
             success {
-                steps{
+                script {
                 echo 'I succeeded!'
                 // currentBuild.currentResult = 'SUCCESS'
                 currentBuild.displayName = conf.appName + currentBuild.currentResult
                 }
             }
             unstable {
-                steps{
+                script {
                 echo 'I am unstable :/'
                 // currentBuild.currentResult = 'UNSTABLE'
                 currentBuild.displayName = conf.appName + currentBuild.currentResult
                 }
             }
             failure {
-                steps {
+                script {
                 echo 'I failed :('
                 // currentBuild.currentResult = 'FAILED'
                 currentBuild.displayName = conf.appName + currentBuild.currentResult
