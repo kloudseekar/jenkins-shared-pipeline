@@ -97,7 +97,8 @@ def call(Map conf) {
                         sh '''mvn sonar:sonar -Dsonar.organization=$ORGANIZATION \
                                   -Dsonar.java.binaries=target/classes/ \
                                   -Dsonar.projectKey=$PROJECT_NAME \
-                                  -Dsonar.sources=.'''
+                                  -Dsonar.sources=. \
+                                  -Dsonar.exclusions=src/java/test/****/*.java''' 
                     }
                 }
             }
