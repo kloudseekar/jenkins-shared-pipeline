@@ -123,6 +123,7 @@ def call(Map conf) {
             }
             success {
                 echo 'I succeeded!'
+                currentBuild.currentResult='SUCCESS'
             }
             unstable {
                 echo 'I am unstable :/'
