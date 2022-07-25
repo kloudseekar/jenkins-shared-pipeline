@@ -1,6 +1,5 @@
 def call(Map conf) {
-
-properties([
+    properties([
     parameters([
         [$class: 'ChoiceParameter',
             choiceType: 'PT_SINGLE_SELECT',
@@ -37,78 +36,74 @@ properties([
                 ]],
 
         string (defaultValue: 't2.micro', name: 'instance_type', trim: true),
-        string(name: "BRANCH_NAME", defaultValue: "main", trim: true, description: "Git  Branch or  Tag to be dpeloyed")
-        
+        string(name: 'BRANCH_NAME', defaultValue: 'main', trim: true, description: 'Git  Branch or  Tag to be dpeloyed')
+
     ])
-    
-        
+
 ])
 
-
-pipeline {
-    agent {
-      label 'linux'
-    }
-    options {
-        ansiColor('xterm')
-    }
-  tools {
-    maven 'Maven-3.8.6'
-  }
-    
-    environment {
-        AWS_ACCESS_KEY_ID     = credentials('EKS_AWS_ACCESS_KEY_ID')
-        AWS_SECRET_ACCESS_KEY = credentials('EKS_AWS_SECRET_ACCESS_KEY')
-        TF_IN_AUTOMATION      = 'true'
-    }
-    
-    stages{
-        stage('Git Checkout & Setup') {
-            steps{
-                checkout changelog: false, poll: false, scm: [$class: 'GitSCM', branches: [[name: params.BRANCH_NAME]], extensions: [], userRemoteConfigs: [[url: conf.giturl]]]
-                script  {
-                    conf.aws_region=params.AWS_REGION
-                    conf.action=params.operation
-                    conf.instance_type=params.instance_type
-                    conf.desired_number=params.desired_number
-                    conf.branch_name= params.BRANCH_NAME
-                    println conf
-
-                }
-
-            }
+    pipeline {
+        agent {
+            label 'linux'
         }
-    stage('SonarCloud') {
-    environment {
-        // SCANNER_HOME = tool 'SonarQubeScanner'
-        ORGANIZATION = "ac-maninder"
-        PROJECT_NAME = "petclinic"
-    }
-    steps {
-        withSonarQubeEnv('SonarCloud-AC') {
-            sh '''mvn sonar:sonar -Dsonar.organization=$ORGANIZATION \
-                                  -Dsonar.java.binaries=build/classes/java/ \
+        options {
+            ansiColor('xterm')
+        }
+        tools {
+            maven 'Maven-3.8.6'
+        }
+
+        environment {
+            AWS_ACCESS_KEY_ID     = credentials('EKS_AWS_ACCESS_KEY_ID')
+            AWS_SECRET_ACCESS_KEY = credentials('EKS_AWS_SECRET_ACCESS_KEY')
+            TF_IN_AUTOMATION      = 'true'
+        }
+
+        stages {
+            stage('Git Checkout & Setup') {
+                steps {
+                    checkout changelog: false, poll: false, scm: [$class: 'GitSCM', branches: [[name: params.BRANCH_NAME]], extensions: [], userRemoteConfigs: [[url: conf.giturl]]]
+                    script  {
+                        conf.aws_region = params.AWS_REGION
+                        conf.action = params.operation
+                        conf.instance_type = params.instance_type
+                        conf.desired_number = params.desired_number
+                        conf.branch_name = params.BRANCH_NAME
+                        println conf
+                    }
+                }
+            }
+            stage('Build  Artifact') {
+                environment {
+                    // SCANNER_HOME = tool 'SonarQubeScanner'
+                    ORGANIZATION = 'ac-maninder'
+                    PROJECT_NAME = 'petclinic'
+                }
+                steps {
+                    withSonarQubeEnv('SonarCloud-AC') {
+                        sh '''mvn clean package'''
+                    }
+                }
+            }
+
+            stage('SonarCloud') {
+                environment {
+                    // SCANNER_HOME = tool 'SonarQubeScanner'
+                    ORGANIZATION = 'ac-maninder'
+                    PROJECT_NAME = 'petclinic-service'
+                }
+                steps {
+                    withSonarQubeEnv('SonarCloud-AC') {
+                        sh '''mvn sonar:sonar -Dsonar.organization=$ORGANIZATION \
+                                  -Dsonar.java.binaries=target/classes/ \
                                   -Dsonar.projectKey=$PROJECT_NAME \
                                   -Dsonar.sources=.'''
+                    }
+                }
+            }
+
         }
     }
-    }
-
-
-        }
-    }
-
 
 }
 
-
-
-
-
-
-
-
-
-
-            
-        
