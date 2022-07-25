@@ -70,7 +70,6 @@ def call(Map conf) {
                         conf.desired_number = params.desired_number
                         conf.branch_name = params.BRANCH_NAME
                         println conf
-                        currentBuild.displayName = conf.appName
                         currentBuild.description = 'My custom build description'
                     }
                 }
@@ -123,13 +122,18 @@ def call(Map conf) {
             }
             success {
                 echo 'I succeeded!'
-                currentBuild.currentResult='SUCCESS'
+                currentBuild.currentResult = 'SUCCESS'
+                currentBuild.displayName = conf.appName + currentBuild.currentResult
             }
             unstable {
                 echo 'I am unstable :/'
+                currentBuild.currentResult = 'UNSTABLE'
+                currentBuild.displayName = conf.appName + currentBuild.currentResult
             }
             failure {
                 echo 'I failed :('
+                currentBuild.currentResult = 'FAILED'
+                currentBuild.displayName = conf.appName + currentBuild.currentResult
             }
             changed {
                 echo 'Things were different before...'
