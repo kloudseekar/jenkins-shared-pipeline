@@ -98,7 +98,7 @@ def call(Map conf) {
                                   -Dsonar.java.binaries=target/classes/ \
                                   -Dsonar.projectKey=$PROJECT_NAME \
                                   -Dsonar.sources=. \
-                                  -Dsonar.exclusions=src/java/test/****/*.java''' 
+                                  -Dsonar.exclusions=src/test/java/****/*.java''' 
                     }
                 }
             }
