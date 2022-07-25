@@ -52,6 +52,9 @@ pipeline {
     options {
         ansiColor('xterm')
     }
+  tools {
+    maven 'Maven-3.8.6'
+  }
     
     environment {
         AWS_ACCESS_KEY_ID     = credentials('EKS_AWS_ACCESS_KEY_ID')
