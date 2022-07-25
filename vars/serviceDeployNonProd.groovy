@@ -70,6 +70,8 @@ def call(Map conf) {
                         conf.desired_number = params.desired_number
                         conf.branch_name = params.BRANCH_NAME
                         println conf
+                        currentBuild.displayName = conf.appName
+                        currentBuild.description = 'My custom build description'
                     }
                 }
             }
@@ -114,25 +116,24 @@ def call(Map conf) {
                 }
             }
         }
-    post {
-        always {
-            echo 'One way or another, I have finished'
-            deleteDir() /* clean up our workspace */
+        post {
+            always {
+                echo 'One way or another, I have finished'
+                deleteDir() /* clean up our workspace */
+            }
+            success {
+                echo 'I succeeded!'
+            }
+            unstable {
+                echo 'I am unstable :/'
+            }
+            failure {
+                echo 'I failed :('
+            }
+            changed {
+                echo 'Things were different before...'
+            }
         }
-        success {
-            echo 'I succeeded!'
-        }
-        unstable {
-            echo 'I am unstable :/'
-        }
-        failure {
-            echo 'I failed :('
-        }
-        changed {
-            echo 'Things were different before...'
-        }
-    }
-
     }
 }
 
