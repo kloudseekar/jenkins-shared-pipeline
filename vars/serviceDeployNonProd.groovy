@@ -117,7 +117,7 @@ def call(Map conf) {
         }
         post {
             always {
-                steps{
+                steps {
                 echo 'One way or another, I have finished'
                 deleteDir() /* clean up our workspace */
                 }
@@ -125,21 +125,21 @@ def call(Map conf) {
             success {
                 steps{
                 echo 'I succeeded!'
-                currentBuild.currentResult = 'SUCCESS'
+                // currentBuild.currentResult = 'SUCCESS'
                 currentBuild.displayName = conf.appName + currentBuild.currentResult
                 }
             }
             unstable {
                 steps{
                 echo 'I am unstable :/'
-                currentBuild.currentResult = 'UNSTABLE'
+                // currentBuild.currentResult = 'UNSTABLE'
                 currentBuild.displayName = conf.appName + currentBuild.currentResult
                 }
             }
             failure {
-                steps{
+                steps {
                 echo 'I failed :('
-                currentBuild.currentResult = 'FAILED'
+                // currentBuild.currentResult = 'FAILED'
                 currentBuild.displayName = conf.appName + currentBuild.currentResult
                 }
             }
