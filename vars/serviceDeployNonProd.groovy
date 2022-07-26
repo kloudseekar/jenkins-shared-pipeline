@@ -114,33 +114,41 @@ def call(Map conf) {
                     }
                 }
             }
+            stage('Build Image') {
+                steps {
+                        script {
+                        docker.build("mnarang/docker-jenkins-pipeline:${env.BUILD_NUMBER}")
+                        }
+
+                }
+            }
         }
         post {
             always {
                 steps {
-                echo 'One way or another, I have finished'
-                deleteDir() /* clean up our workspace */
+                    echo 'One way or another, I have finished'
+                    deleteDir() /* clean up our workspace */
                 }
             }
             success {
                 script {
-                echo 'I succeeded!'
-                // currentBuild.currentResult = 'SUCCESS'
-                currentBuild.displayName = conf.appName + currentBuild.currentResult
+                    echo 'I succeeded!'
+                    // currentBuild.currentResult = 'SUCCESS'
+                    currentBuild.displayName = conf.appName + currentBuild.currentResult
                 }
             }
             unstable {
                 script {
-                echo 'I am unstable :/'
-                // currentBuild.currentResult = 'UNSTABLE'
-                currentBuild.displayName = conf.appName + currentBuild.currentResult
+                    echo 'I am unstable :/'
+                    // currentBuild.currentResult = 'UNSTABLE'
+                    currentBuild.displayName = conf.appName + currentBuild.currentResult
                 }
             }
             failure {
                 script {
-                echo 'I failed :('
-                // currentBuild.currentResult = 'FAILED'
-                currentBuild.displayName = conf.appName + currentBuild.currentResult
+                    echo 'I failed :('
+                    // currentBuild.currentResult = 'FAILED'
+                    currentBuild.displayName = conf.appName + currentBuild.currentResult
                 }
             }
             changed {
@@ -149,4 +157,3 @@ def call(Map conf) {
         }
     }
 }
-
