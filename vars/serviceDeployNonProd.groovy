@@ -59,7 +59,6 @@ def call(Map conf) {
             TF_IN_AUTOMATION      = 'true'
             dockerRegistryUrl     = 'https://hub.docker.com/'
             dockerRegistryCred    = 'dockerhubcred'
-
         }
 
         stages {
@@ -120,60 +119,60 @@ def call(Map conf) {
             stage('Build Image') {
                 steps {
                         script {
-                        dockerImage=docker.build("mnarang/docker-jenkins-pipeline:${env.BUILD_NUMBER}")
-                        }
-
-                }
-            }
-       stage('Deploy') {
-            steps {
-                script{
-                        docker.withRegistry(dockerRegistryUrl, dockerRegistryCred) {
-                        dockerImage.push("${env.BUILD_NUMBER}")
-                        dockerImage.push("latest")
+                        dockerImage = docker.build("mnarang/docker-jenkins-pipeline:${env.BUILD_NUMBER}")
                         }
                 }
             }
-       }
-        post {
-            always {
+            stage('Deploy') {
                 steps {
-                    echo 'One way or another, I have finished'
-                    deleteDir() /* clean up our workspace */
+                    script {
+                        docker.withRegistry(dockerRegistryUrl, dockerRegistryCred) {
+                            dockerImage.push("${env.BUILD_NUMBER}")
+                            dockerImage.push('latest')
+                        }
+                    }
                 }
-            }
-            success {
-                steps{
-
-                script {
-                    echo 'I succeeded!'
-                    // currentBuild.currentResult = 'SUCCESS'
-                    currentBuild.displayName = conf.appName + currentBuild.currentResult
-                }
-                }
-            }
-            unstable {
-                steps{
-                script {
-                    echo 'I am unstable :/'
-                    // currentBuild.currentResult = 'UNSTABLE'
-                    currentBuild.displayName = conf.appName + currentBuild.currentResult
-                }
-                }
-            }
-            failure {
-                steps{
-                script {
-                    echo 'I failed :('
-                    // currentBuild.currentResult = 'FAILED'
-                    currentBuild.displayName = conf.appName + currentBuild.currentResult
-                }
-                }
-            }
-            changed {
-                echo 'Things were different before...'
             }
         }
+            post {
+                always {
+                    steps {
+                        echo 'One way or another, I have finished'
+                        deleteDir() /* clean up our workspace */
+                    }
+                }
+                success {
+                    steps {
+                        script {
+                            echo 'I succeeded!'
+                            // currentBuild.currentResult = 'SUCCESS'
+                            currentBuild.displayName = conf.appName + currentBuild.currentResult
+                        }
+                    }
+                }
+                unstable {
+                    steps {
+                        script {
+                            echo 'I am unstable :/'
+                            // currentBuild.currentResult = 'UNSTABLE'
+                            currentBuild.displayName = conf.appName + currentBuild.currentResult
+                        }
+                    }
+                }
+                failure {
+                    steps {
+                        /* groovylint-disable-next-line NestedBlockDepth */
+                        script {
+                            echo 'I failed :('
+                            // currentBuild.currentResult = 'FAILED'
+                            currentBuild.displayName = conf.appName + currentBuild.currentResult
+                        }
+                    }
+                }
+                changed {
+                    echo 'Things were different before...'
+                }
+            }
         }
     }
-}
+
