@@ -54,9 +54,6 @@ def call(Map conf) {
         }
 
         environment {
-            AWS_ACCESS_KEY_ID     = credentials('EKS_AWS_ACCESS_KEY_ID')
-            AWS_SECRET_ACCESS_KEY = credentials('EKS_AWS_SECRET_ACCESS_KEY')
-            TF_IN_AUTOMATION      = 'true'
             dockerRegistryUrl     = 'https://hub.docker.com/'
             dockerRegistryCred    = 'dockerhubcred'
         }
@@ -109,6 +106,7 @@ def call(Map conf) {
             stage('Quality Gate') {
                 steps {
                     sleep(10)
+                    /* groovylint-disable-next-line DuplicateNumberLiteral */
                     timeout(time: 10, unit: 'MINUTES') {
                         // Parameter indicates whether to set pipeline to UNSTABLE if Quality Gate fails
                         // true = set pipeline to UNSTABLE, false = don't
@@ -119,7 +117,7 @@ def call(Map conf) {
             stage('Build Image') {
                 steps {
                         script {
-                        dockerImage = docker.build("mnarang/docker-jenkins-pipeline:${env.BUILD_NUMBER}")
+                        dockerImage = docker.build("mnarang2/docker-jenkins-pipeline:${env.BUILD_NUMBER}")
                         }
                 }
             }
@@ -135,47 +133,47 @@ def call(Map conf) {
                 }
             }
         }
-            post {
-                always {
-                    steps {
-                        script{
-                        echo 'One way or another, I have finished'
-                        deleteDir() /* clean up our workspace */
-                        }
-                    }
-                }
-                success {
-                    steps {
-                        script {
-                            echo 'I succeeded!'
-                            // currentBuild.currentResult = 'SUCCESS'
-                            currentBuild.displayName = conf.appName + currentBuild.currentResult
-                        }
-                    }
-                }
-                unstable {
-                    steps {
-                        script {
-                            echo 'I am unstable :/'
-                            // currentBuild.currentResult = 'UNSTABLE'
-                            currentBuild.displayName = conf.appName + currentBuild.currentResult
-                        }
-                    }
-                }
-                failure {
-                    steps {
-                        /* groovylint-disable-next-line NestedBlockDepth */
-                        script {
-                            echo 'I failed :('
-                            // currentBuild.currentResult = 'FAILED'
-                            currentBuild.displayName = conf.appName + currentBuild.currentResult
-                        }
-                    }
-                }
-                changed {
-                    echo 'Things were different before...'
-                }
-            }
-        }
+            // post {
+            //     always {
+            //         steps {
+            //             script {
+            //             echo 'One way or another, I have finished'
+            //             deleteDir() /* clean up our workspace */
+            //             }
+            //         }
+            //     }
+            //     success {
+            //         steps {
+            //             script {
+            //                 echo 'I succeeded!'
+            //                 // currentBuild.currentResult = 'SUCCESS'
+            //                 currentBuild.displayName = conf.appName + currentBuild.currentResult
+            //             }
+            //         }
+            //     }
+            //     unstable {
+            //         steps {
+            //             script {
+            //                 echo 'I am unstable :/'
+            //                 // currentBuild.currentResult = 'UNSTABLE'
+            //                 currentBuild.displayName = conf.appName + currentBuild.currentResult
+            //             }
+            //         }
+            //     }
+            //     failure {
+            //         steps {
+            //             /* groovylint-disable-next-line NestedBlockDepth */
+            //             script {
+            //                 echo 'I failed :('
+            //                 // currentBuild.currentResult = 'FAILED'
+            //                 currentBuild.displayName = conf.appName + currentBuild.currentResult
+            //             }
+            //         }
+            //     }
+            //     changed {
+            //         echo 'Things were different before...'
+            //     }
+            // }
     }
+}
 
