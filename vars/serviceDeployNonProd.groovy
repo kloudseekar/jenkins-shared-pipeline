@@ -57,6 +57,9 @@ def call(Map conf) {
             AWS_ACCESS_KEY_ID     = credentials('EKS_AWS_ACCESS_KEY_ID')
             AWS_SECRET_ACCESS_KEY = credentials('EKS_AWS_SECRET_ACCESS_KEY')
             TF_IN_AUTOMATION      = 'true'
+            dockerRegistryUrl     = 'https://hub.docker.com/'
+            dockerRegistryCred    = 'dockerhubcred'
+
         }
 
         stages {
@@ -117,9 +120,18 @@ def call(Map conf) {
             stage('Build Image') {
                 steps {
                         script {
-                        docker.build("mnarang/docker-jenkins-pipeline:${env.BUILD_NUMBER}")
+                        dockerImage=docker.build("mnarang/docker-jenkins-pipeline:${env.BUILD_NUMBER}")
                         }
 
+                }
+            }
+       stage('Deploy') {
+            steps {
+                script{
+                        docker.withRegistry(dockerRegistryUrl, dockerRegistryCred) {
+                        dockerImage.push("${env.BUILD_NUMBER}")
+                        dockerImage.push("latest")
+                    }
                 }
             }
         }
