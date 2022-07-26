@@ -126,7 +126,8 @@ def call(Map conf) {
             stage('Deploy') {
                 steps {
                     script {
-                        docker.withRegistry(dockerRegistryUrl, dockerRegistryCred) {
+                        /* groovylint-disable-next-line NestedBlockDepth */
+                        docker.withRegistry('', dockerRegistryCred) {
                             dockerImage.push("${env.BUILD_NUMBER}")
                             dockerImage.push('latest')
                         }
@@ -137,8 +138,10 @@ def call(Map conf) {
             post {
                 always {
                     steps {
+                        script{
                         echo 'One way or another, I have finished'
                         deleteDir() /* clean up our workspace */
+                        }
                     }
                 }
                 success {
