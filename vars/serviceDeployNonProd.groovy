@@ -131,10 +131,10 @@ def call(Map conf) {
                         docker.withRegistry(dockerRegistryUrl, dockerRegistryCred) {
                         dockerImage.push("${env.BUILD_NUMBER}")
                         dockerImage.push("latest")
-                    }
+                        }
                 }
             }
-        }
+       }
         post {
             always {
                 steps {
@@ -143,29 +143,37 @@ def call(Map conf) {
                 }
             }
             success {
+                steps{
+
                 script {
                     echo 'I succeeded!'
                     // currentBuild.currentResult = 'SUCCESS'
                     currentBuild.displayName = conf.appName + currentBuild.currentResult
                 }
+                }
             }
             unstable {
+                steps{
                 script {
                     echo 'I am unstable :/'
                     // currentBuild.currentResult = 'UNSTABLE'
                     currentBuild.displayName = conf.appName + currentBuild.currentResult
                 }
+                }
             }
             failure {
+                steps{
                 script {
                     echo 'I failed :('
                     // currentBuild.currentResult = 'FAILED'
                     currentBuild.displayName = conf.appName + currentBuild.currentResult
                 }
+                }
             }
             changed {
                 echo 'Things were different before...'
             }
+        }
         }
     }
 }
