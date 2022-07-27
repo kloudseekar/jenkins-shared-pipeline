@@ -118,8 +118,10 @@ def call(Map conf) {
             }
                 stage('Remove Unused docker image') {
                 steps {
-                    String _appName = conf.appName
-                    sh "docker rmi ${env.artifactoryInitial}/${_appName}:${env.BUILD_NUMBER}"
+                    script {
+                        String _appName = conf.appName
+                        sh "docker rmi ${env.artifactoryInitial}/${_appName}:${env.BUILD_NUMBER}"
+                    }
                 }
                 }
         }
