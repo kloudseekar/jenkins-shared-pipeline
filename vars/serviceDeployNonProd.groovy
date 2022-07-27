@@ -120,7 +120,8 @@ def call(Map conf) {
                 steps {
                     script {
                         String _appName = conf.appName
-                        sh "docker rmi ${env.artifactoryInitial}/${_appName}:${env.BUILD_NUMBER}"
+                        sh "docker rmi ${env.dockerhubInitial}/${_appName}:${env.BUILD_NUMBER}"
+                        sh "docker rmi ${env.docker}/${_appName}:${env.BUILD_NUMBER}"
                     }
                 }
                 }
