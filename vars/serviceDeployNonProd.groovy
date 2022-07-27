@@ -83,17 +83,6 @@ def call(Map conf) {
             //     }
             // }
 
-            // stage('Build Image') {
-            //     steps {
-            //             script {
-            //                 String _appName = conf.appName
-            //             dockerImage = docker.build("${env.dockerhubInitial}/${_appName}:${env.BUILD_NUMBER}")
-            //             /* groovylint-disable-next-line LineLength */
-            //             dockerImageArt = docker.build("${env.artifactoryInitial}/${_appName}:${env.BUILD_NUMBER}")
-            //             }
-            //     }
-            // }
-
             stage('Build Image') {
                 parallel {
                     stage('Build for Dockerhub') {
@@ -116,29 +105,56 @@ def call(Map conf) {
                     }
                 }
             }
-            stage('Deploy') {
-                steps {
-                    script {
+            stage('Build Image') {
+                parallel {
+                    stage('Deploy For Dockerhub') {
+                        steps {
+                            script {
                         /* groovylint-disable-next-line NestedBlockDepth */
-                        docker.withRegistry('', dockerRegistryCred) {
-                            dockerImage.push("${env.BUILD_NUMBER}")
-                            dockerImage.push('latest')
+                                docker.withRegistry('', dockerRegistryCred) {
+                                    dockerImage.push("${env.BUILD_NUMBER}")
+                                    dockerImage.push('latest')
+                                }
+                            }
                         }
                     }
-                }
-            }
-            stage('Deploy Jfrog Artifactory') {
-                steps {
-                    script {
+                    stage('Deploy for Jfrog Artifactory') {
+                        steps {
+                            script {
                         /* groovylint-disable-next-line NestedBlockDepth */
-                        docker.withRegistry(artifactoryRegistryUrl, artifactoryRegistryCred) {
-                            dockerImageArt.push("${env.BUILD_NUMBER}")
+                                docker.withRegistry(artifactoryRegistryUrl, artifactoryRegistryCred) {
+                                    dockerImageArt.push("${env.BUILD_NUMBER}")
                             /* groovylint-disable-next-line DuplicateStringLiteral */
-                            dockerImageArt.push('jfrog')
+                                    dockerImageArt.push('jfrog')
+                                }
+                            }
                         }
                     }
                 }
             }
+            // stage('Deploy') {
+            //     steps {
+            //         script {
+            //             /* groovylint-disable-next-line NestedBlockDepth */
+            //             docker.withRegistry('', dockerRegistryCred) {
+            //                 dockerImage.push("${env.BUILD_NUMBER}")
+            //                 dockerImage.push('latest')
+            //             }
+            //         }
+            //     }
+            // }
+            // stage('Deploy Jfrog Artifactory') {
+            //     steps {
+            //         script {
+            //             /* groovylint-disable-next-line NestedBlockDepth */
+            //             docker.withRegistry(artifactoryRegistryUrl, artifactoryRegistryCred) {
+            //                 dockerImageArt.push("${env.BUILD_NUMBER}")
+            //                 /* groovylint-disable-next-line DuplicateStringLiteral */
+            //                 dockerImageArt.push('jfrog')
+            //             }
+            //         }
+            //     }
+            // }
                 stage('Remove Unused docker image') {
                 steps {
                     script {
@@ -192,4 +208,3 @@ def call(Map conf) {
     // }
     }
 }
-
