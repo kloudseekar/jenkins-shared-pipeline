@@ -85,7 +85,7 @@ def call(Map conf) {
                         script {
                         dockerImage = docker.build("mnarang2/docker-jenkins-pipeline:${env.BUILD_NUMBER}")
                         /* groovylint-disable-next-line LineLength */
-                        dockerImageArt = docker.build(" myenvpractise.jfrog.io/default-docker-virtual:${env.BUILD_NUMBER}")
+                        dockerImageArt = docker.build("myenvpractise.jfrog.io/default-docker-virtual/docker-jenkins-pipeline:${env.BUILD_NUMBER}")
                         }
                 }
             }
