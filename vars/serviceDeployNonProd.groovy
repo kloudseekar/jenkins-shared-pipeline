@@ -84,6 +84,8 @@ def call(Map conf) {
                 steps {
                         script {
                         dockerImage = docker.build("mnarang2/docker-jenkins-pipeline:${env.BUILD_NUMBER}")
+                        /* groovylint-disable-next-line LineLength */
+                        dockerImageArt = docker.build(" myenvpractise.jfrog.io/default-docker-virtual:${env.BUILD_NUMBER}")
                         }
                 }
             }
@@ -102,10 +104,10 @@ def call(Map conf) {
                 steps {
                     script {
                         /* groovylint-disable-next-line NestedBlockDepth */
-                        docker.withRegistry(artifactoryRegistryUrl, artifactorycred) {
-                            dockerImage.push("${env.BUILD_NUMBER}")
+                        docker.withRegistry(artifactoryRegistryUrl, artifactoryRegistryCred) {
+                            dockerImageArt.push("${env.BUILD_NUMBER}")
                             /* groovylint-disable-next-line DuplicateStringLiteral */
-                            dockerImage.push('jfrog')
+                            dockerImageArt.push('jfrog')
                         }
                     }
                 }
