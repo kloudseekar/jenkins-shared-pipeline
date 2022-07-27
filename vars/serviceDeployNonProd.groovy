@@ -73,7 +73,7 @@ def call(Map conf) {
 
             stage('Quality Gate') {
                 steps {
-                    sleep(10)
+                    sleep(30)
                     /* groovylint-disable-next-line DuplicateNumberLiteral */
                     timeout(time: 10, unit: 'MINUTES') {
                         // Parameter indicates whether to set pipeline to UNSTABLE if Quality Gate fails
@@ -151,16 +151,16 @@ def call(Map conf) {
                 }
             }
         }
-        post {
-            always {
-                steps {
-                    script {
-                        echo 'One way or another, I have finished'
-                        deleteDir() /* clean up our workspace */
-                    }
-                }
-            }
-        }
+        // post {
+        //     always {
+        //         steps {
+        //             script {
+        //                 echo 'One way or another, I have finished'
+        //                 deleteDir() /* clean up our workspace */
+        //             }
+        //         }
+        //     }
+        // }
 //     success {
 //         steps {
 //             script {
