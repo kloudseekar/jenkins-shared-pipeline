@@ -20,7 +20,7 @@ def call(Map conf) {
         environment {
             dockerRegistryUrl     = 'https://hub.docker.com/'
             dockerRegistryCred    = 'dockerhubcred'
-            dockerhubInitial       = 'mnarang2/${conf.appName}'
+            dockerhubInitial       = 'mnarang2/'
             artifactoryRegistryUrl = 'https://myenvpractise.jfrog.io/'
             artifactoryRegistryCred = 'artifactorycred'
             artifactoryInitial      = 'myenvpractise.jfrog.io/default-docker-virtual' 
@@ -82,10 +82,12 @@ def call(Map conf) {
             //         }
             //     }
             // }
+            conf.appName
             stage('Build Image') {
                 steps {
                         script {
-                        dockerImage = docker.build("${env.dockerhubInitial}/${env.BUILD_NUMBER}")
+                            def _appName = conf.appName
+                        dockerImage = docker.build("${env.dockerhubInitial}/${_appName}:${env.BUILD_NUMBER}")
                         /* groovylint-disable-next-line LineLength */
                         dockerImageArt = docker.build("myenvpractise.jfrog.io/default-docker-virtual/docker-jenkins-pipeline:${env.BUILD_NUMBER}")
                         }
