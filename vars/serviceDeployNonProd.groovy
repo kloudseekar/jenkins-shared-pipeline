@@ -24,6 +24,7 @@ def call(Map conf) {
             artifactoryRegistryUrl = 'https://myenvpractise.jfrog.io/'
             artifactoryRegistryCred = 'artifactorycred'
             artifactoryInitial      = 'myenvpractise.jfrog.io/default-docker-virtual'
+            String _appName = conf.appName
         }
 
         stages {
