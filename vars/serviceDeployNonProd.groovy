@@ -105,7 +105,7 @@ def call(Map conf) {
                     }
                 }
             }
-            stage('Build Image') {
+            stage('Push Image') {
                 parallel {
                     stage('Deploy For Dockerhub') {
                         steps {
