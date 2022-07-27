@@ -83,14 +83,37 @@ def call(Map conf) {
             //     }
             // }
 
+            // stage('Build Image') {
+            //     steps {
+            //             script {
+            //                 String _appName = conf.appName
+            //             dockerImage = docker.build("${env.dockerhubInitial}/${_appName}:${env.BUILD_NUMBER}")
+            //             /* groovylint-disable-next-line LineLength */
+            //             dockerImageArt = docker.build("${env.artifactoryInitial}/${_appName}:${env.BUILD_NUMBER}")
+            //             }
+            //     }
+            // }
+
             stage('Build Image') {
-                steps {
-                        script {
-                            String _appName = conf.appName
-                        dockerImage = docker.build("${env.dockerhubInitial}/${_appName}:${env.BUILD_NUMBER}")
+                parallel {
+                    stage('Build for Dockerhub') {
+                        steps {
+                            script {
+                                String _appName = conf.appName
+                                dockerImage = docker.build("${env.dockerhubInitial}/${_appName}:${env.BUILD_NUMBER}")
                         /* groovylint-disable-next-line LineLength */
-                        dockerImageArt = docker.build("${env.artifactoryInitial}/${_appName}:${env.BUILD_NUMBER}")
+                            }
                         }
+                    }
+                    stage('Build for Jfrog') {
+                        steps {
+                            script {
+                                String _appName = conf.appName
+                        /* groovylint-disable-next-line LineLength */
+                                dockerImageArt = docker.build("${env.artifactoryInitial}/${_appName}:${env.BUILD_NUMBER}")
+                            }
+                        }
+                    }
                 }
             }
             stage('Deploy') {
