@@ -132,7 +132,7 @@ def call(Map conf) {
                     }
                 }
             }
-           
+
                 stage('Remove Unused docker image') {
                 steps {
                     script {
@@ -142,48 +142,56 @@ def call(Map conf) {
                     }
                 }
                 }
-        }
-    post {
-        always {
-            steps {
-                script {
-                echo 'One way or another, I have finished'
-                deleteDir() /* clean up our workspace */
+
+            stage('Deploy Helm Chart') {
+                steps {
+                    script {
+                        sh "helm install pet-clinic kubernetes/pet-clinic"
+                    }
                 }
             }
         }
-    }
-    //     success {
-    //         steps {
-    //             script {
-    //                 echo 'I succeeded!'
-    //                 // currentBuild.currentResult = 'SUCCESS'
-    //                 currentBuild.displayName = conf.appName + currentBuild.currentResult
-    //             }
-    //         }
-    //     }
-    //     unstable {
-    //         steps {
-    //             script {
-    //                 echo 'I am unstable :/'
-    //                 // currentBuild.currentResult = 'UNSTABLE'
-    //                 currentBuild.displayName = conf.appName + currentBuild.currentResult
-    //             }
-    //         }
-    //     }
-    //     failure {
-    //         steps {
-    //             /* groovylint-disable-next-line NestedBlockDepth */
-    //             script {
-    //                 echo 'I failed :('
-    //                 // currentBuild.currentResult = 'FAILED'
-    //                 currentBuild.displayName = conf.appName + currentBuild.currentResult
-    //             }
-    //         }
-    //     }
-    //     changed {
-    //         echo 'Things were different before...'
-    //     }
-    // }
-    }
+        post {
+            always {
+                steps {
+                    script {
+                        echo 'One way or another, I have finished'
+                        deleteDir() /* clean up our workspace */
+                    }
+                }
+            }
+        }
+//     success {
+//         steps {
+//             script {
+//                 echo 'I succeeded!'
+//                 // currentBuild.currentResult = 'SUCCESS'
+//                 currentBuild.displayName = conf.appName + currentBuild.currentResult
+//             }
+//         }
+//     }
+//     unstable {
+//         steps {
+//             script {
+//                 echo 'I am unstable :/'
+//                 // currentBuild.currentResult = 'UNSTABLE'
+//                 currentBuild.displayName = conf.appName + currentBuild.currentResult
+//             }
+//         }
+//     }
+//     failure {
+//         steps {
+//             /* groovylint-disable-next-line NestedBlockDepth */
+//             script {
+//                 echo 'I failed :('
+//                 // currentBuild.currentResult = 'FAILED'
+//                 currentBuild.displayName = conf.appName + currentBuild.currentResult
+//             }
+//         }
+//     }
+//     changed {
+//         echo 'Things were different before...'
+//     }
+// }
+}
 }
