@@ -1,43 +1,7 @@
 def call(Map conf) {
     properties([
     parameters([
-        [$class: 'ChoiceParameter',
-            choiceType: 'PT_SINGLE_SELECT',
-            description: 'Select a Region',
-            filterLength: 1,
-            filterable: false,
-            name: 'AWS_REGION',
-            randomName: 'choice-parameter-7601235200970',
-            script: [$class: 'GroovyScript',
-                fallbackScript: [classpath: [], sandbox: true, script: 'return ["ERROR"]'],
-                script: [classpath: [], sandbox: true, script: 'return ["us-east-1","us-east-2","ap-south-1"]']
-                ]],
-        [$class: 'ChoiceParameter',
-            choiceType: 'PT_SINGLE_SELECT',
-            description: 'Select Workspace',
-            filterLength: 1,
-            filterable: false,
-            name: 'terraform_workspace',
-            randomName: 'choice-parameter-7601235200970',
-            script: [$class: 'GroovyScript',
-                fallbackScript: [classpath: [], sandbox: true, script: 'return ["ERROR"]'],
-                script: [classpath: [], sandbox: true, script: 'return ["dev","qa","prod"]']
-                ]],
-        [$class: 'ChoiceParameter',
-            choiceType: 'PT_SINGLE_SELECT',
-            description: 'Terraform Operation',
-            filterLength: 1,
-            filterable: false,
-            name: 'operation',
-            randomName: 'choice-parameter-7601235200970',
-            script: [$class: 'GroovyScript',
-                fallbackScript: [classpath: [], sandbox: true, script: 'return ["ERROR"]'],
-                script: [classpath: [], sandbox: true, script: 'return ["init","plan","apply","destroy"]']
-                ]],
-
-        string (defaultValue: 't2.micro', name: 'instance_type', trim: true),
         string(name: 'BRANCH_NAME', defaultValue: 'main', trim: true, description: 'Git  Branch or  Tag to be dpeloyed')
-
     ])
 
 ])
@@ -56,6 +20,8 @@ def call(Map conf) {
         environment {
             dockerRegistryUrl     = 'https://hub.docker.com/'
             dockerRegistryCred    = 'dockerhubcred'
+            artifactoryRegistryUrl = 'https://myenvpractise.jfrog.io/'
+            artifactoryRegistryCred = 'artifactorycred'
         }
 
         stages {
@@ -128,6 +94,18 @@ def call(Map conf) {
                         docker.withRegistry('', dockerRegistryCred) {
                             dockerImage.push("${env.BUILD_NUMBER}")
                             dockerImage.push('latest')
+                        }
+                    }
+                }
+            }
+            stage('Deploy Jfrog Artifactory') {
+                steps {
+                    script {
+                        /* groovylint-disable-next-line NestedBlockDepth */
+                        docker.withRegistry(artifactoryRegistryUrl, artifactorycred) {
+                            dockerImage.push("${env.BUILD_NUMBER}")
+                            /* groovylint-disable-next-line DuplicateStringLiteral */
+                            dockerImage.push('jfrog')
                         }
                     }
                 }
