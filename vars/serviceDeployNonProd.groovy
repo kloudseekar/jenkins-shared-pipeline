@@ -86,7 +86,7 @@ def call(Map conf) {
             stage('Build Image') {
                 steps {
                         script {
-                            def _appName = conf.appName
+                            String _appName = conf.appName
                         dockerImage = docker.build("${env.dockerhubInitial}/${_appName}:${env.BUILD_NUMBER}")
                         /* groovylint-disable-next-line LineLength */
                         dockerImageArt = docker.build("myenvpractise.jfrog.io/default-docker-virtual/docker-jenkins-pipeline:${env.BUILD_NUMBER}")
