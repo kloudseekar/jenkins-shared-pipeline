@@ -20,7 +20,7 @@ def call(Map conf) {
         environment {
             dockerRegistryUrl     = 'https://hub.docker.com/'
             dockerRegistryCred    = 'dockerhubcred'
-            dockerhubInitial       = 'mnarang2/'+conf.appName
+            dockerhubInitial       = 'mnarang2/${conf.appName}'
             artifactoryRegistryUrl = 'https://myenvpractise.jfrog.io/'
             artifactoryRegistryCred = 'artifactorycred'
             artifactoryInitial      = 'myenvpractise.jfrog.io/default-docker-virtual' 
@@ -115,47 +115,47 @@ def call(Map conf) {
                 }
             }
         }
-            // post {
-            //     always {
-            //         steps {
-            //             script {
-            //             echo 'One way or another, I have finished'
-            //             deleteDir() /* clean up our workspace */
-            //             }
-            //         }
-            //     }
-            //     success {
-            //         steps {
-            //             script {
-            //                 echo 'I succeeded!'
-            //                 // currentBuild.currentResult = 'SUCCESS'
-            //                 currentBuild.displayName = conf.appName + currentBuild.currentResult
-            //             }
-            //         }
-            //     }
-            //     unstable {
-            //         steps {
-            //             script {
-            //                 echo 'I am unstable :/'
-            //                 // currentBuild.currentResult = 'UNSTABLE'
-            //                 currentBuild.displayName = conf.appName + currentBuild.currentResult
-            //             }
-            //         }
-            //     }
-            //     failure {
-            //         steps {
-            //             /* groovylint-disable-next-line NestedBlockDepth */
-            //             script {
-            //                 echo 'I failed :('
-            //                 // currentBuild.currentResult = 'FAILED'
-            //                 currentBuild.displayName = conf.appName + currentBuild.currentResult
-            //             }
-            //         }
-            //     }
-            //     changed {
-            //         echo 'Things were different before...'
-            //     }
-            // }
+    // post {
+    //     always {
+    //         steps {
+    //             script {
+    //             echo 'One way or another, I have finished'
+    //             deleteDir() /* clean up our workspace */
+    //             }
+    //         }
+    //     }
+    //     success {
+    //         steps {
+    //             script {
+    //                 echo 'I succeeded!'
+    //                 // currentBuild.currentResult = 'SUCCESS'
+    //                 currentBuild.displayName = conf.appName + currentBuild.currentResult
+    //             }
+    //         }
+    //     }
+    //     unstable {
+    //         steps {
+    //             script {
+    //                 echo 'I am unstable :/'
+    //                 // currentBuild.currentResult = 'UNSTABLE'
+    //                 currentBuild.displayName = conf.appName + currentBuild.currentResult
+    //             }
+    //         }
+    //     }
+    //     failure {
+    //         steps {
+    //             /* groovylint-disable-next-line NestedBlockDepth */
+    //             script {
+    //                 echo 'I failed :('
+    //                 // currentBuild.currentResult = 'FAILED'
+    //                 currentBuild.displayName = conf.appName + currentBuild.currentResult
+    //             }
+    //         }
+    //     }
+    //     changed {
+    //         echo 'Things were different before...'
+    //     }
+    // }
     }
 }
 
