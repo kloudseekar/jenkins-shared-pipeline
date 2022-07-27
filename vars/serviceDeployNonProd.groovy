@@ -24,7 +24,6 @@ def call(Map conf) {
             artifactoryRegistryUrl = 'https://myenvpractise.jfrog.io/'
             artifactoryRegistryCred = 'artifactorycred'
             artifactoryInitial      = 'myenvpractise.jfrog.io/default-docker-virtual'
-            String _appName = conf.appName
         }
 
         stages {
@@ -119,6 +118,7 @@ def call(Map conf) {
             }
                 stage('Remove Unused docker image') {
                 steps {
+                    String _appName = conf.appName
                     sh "docker rmi ${env.artifactoryInitial}/${_appName}:${env.BUILD_NUMBER}"
                 }
                 }
