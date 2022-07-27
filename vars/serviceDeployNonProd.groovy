@@ -1,7 +1,7 @@
 def call(Map conf) {
     properties([
     parameters([
-        string(name: 'BRANCH_NAME', defaultValue: 'main', trim: true, description: 'Git  Branch or  Tag to be dpeloyed')
+        string(name: 'BRANCH_NAME', defaultValue: 'JenkinsFlow', trim: true, description: 'Git  Branch or  Tag to be dpeloyed')
     ])
 
 ])
@@ -82,7 +82,7 @@ def call(Map conf) {
             //         }
             //     }
             // }
-            conf.appName
+
             stage('Build Image') {
                 steps {
                         script {
