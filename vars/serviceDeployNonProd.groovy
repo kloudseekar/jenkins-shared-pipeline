@@ -71,17 +71,17 @@ def call(Map conf) {
                 }
             }
 
-            stage('Quality Gate') {
-                steps {
-                    sleep(30)
-                    /* groovylint-disable-next-line DuplicateNumberLiteral */
-                    timeout(time: 10, unit: 'MINUTES') {
-                        // Parameter indicates whether to set pipeline to UNSTABLE if Quality Gate fails
-                        // true = set pipeline to UNSTABLE, false = don't
-                        waitForQualityGate abortPipeline: true
-                    }
-                }
-            }
+            // stage('Quality Gate') {
+            //     steps {
+            //         sleep(30)
+            //         /* groovylint-disable-next-line DuplicateNumberLiteral */
+            //         timeout(time: 10, unit: 'MINUTES') {
+            //             // Parameter indicates whether to set pipeline to UNSTABLE if Quality Gate fails
+            //             // true = set pipeline to UNSTABLE, false = don't
+            //             waitForQualityGate abortPipeline: true
+            //         }
+            //     }
+            // }
 
             stage('Build Image') {
                 parallel {
