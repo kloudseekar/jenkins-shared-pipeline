@@ -116,6 +116,11 @@ def call(Map conf) {
                     }
                 }
             }
+                stage('Remove Unused docker image') {
+                steps {
+                    sh "docker rmi ${env.artifactoryInitial}/${_appName}:${env.BUILD_NUMBER}"
+                }
+                }
         }
     // post {
     //     always {
