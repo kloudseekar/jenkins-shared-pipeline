@@ -20,7 +20,7 @@ def call(Map conf) {
         environment {
             dockerRegistryUrl     = 'https://hub.docker.com/'
             dockerRegistryCred    = 'dockerhubcred'
-            dockerhubInitial       = 'mnarang2/'
+            dockerhubInitial       = 'mnarang2'
             artifactoryRegistryUrl = 'https://myenvpractise.jfrog.io/'
             artifactoryRegistryCred = 'artifactorycred'
             artifactoryInitial      = 'myenvpractise.jfrog.io/default-docker-virtual' 
