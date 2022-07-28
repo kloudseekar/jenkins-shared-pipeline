@@ -138,7 +138,10 @@ def call(Map conf) {
                     script {
                         String _appName = conf.appName
                         sh "docker rmi ${env.dockerhubInitial}/${_appName}:${env.BUILD_NUMBER}"
+                        sh "docker rmi ${env.dockerhubInitial}/${_appName}:latest"
                         sh "docker rmi ${env.artifactoryInitial}/${_appName}:${env.BUILD_NUMBER}"
+                        sh "docker rmi ${env.artifactoryInitial}/${_appName}:jfrog"
+                        
                     }
                 }
                 }
