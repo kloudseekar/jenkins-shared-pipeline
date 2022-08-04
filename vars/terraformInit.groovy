@@ -5,7 +5,8 @@ def call() {
           echo "*************** TERRAFOM INIT ******************"
           echo "******* At environment: ${params.terraform_workspace} ********"
           echo "*************************************************"
-            terraform init -backend-config=config.s3.tfbackend
+            // terraform init -backend-config=config.s3.tfbackend
+               terraform init
             echo '\033[Hello colorful world!\033'
             """)
                     script {
